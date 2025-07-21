@@ -22,7 +22,7 @@ trait ApiResponse
     }
 
     protected function unauthorizedResponse($message = null){
-        return this->erreurResponse($message);
+        return $this->erreurResponse($message);
     }
 }
 
