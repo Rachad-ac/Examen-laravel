@@ -14,7 +14,7 @@ trait ApiResponse
         ], $code);
     }
 
-    protected function erreurResponse($data , $message = null , $code = Response::HTTP_BAD_REQUEST){
+    protected function erreurResponse($message = null , $code = Response::HTTP_BAD_REQUEST){
        return response()->json([
             'success' => false,
             'message' => $message
@@ -22,7 +22,7 @@ trait ApiResponse
     }
 
     protected function unauthorizedResponse($message = null){
-        return this->erreurResponse($message);
+        return $this->erreurResponse(null, $message, Response::HTTP_UNAUTHORIZED);
     }
 }
 
