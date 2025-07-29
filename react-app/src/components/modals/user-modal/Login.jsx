@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from "../../context/AuthContext";  
+import { useAuth } from "../../../context/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
-import UserApi from "../../api/UserApi"; 
+import UserApi from "../../../api/UserApi"; 
 
 function Login({ showModal = true, onClose, onOpenRegister }) {
   const { login: contextLogin } = useAuth();
