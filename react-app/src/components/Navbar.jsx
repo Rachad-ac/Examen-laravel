@@ -11,52 +11,56 @@ function Navbar() {
   };
 
   return (
-    <div className="d-flex">
+    <div className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm " >
       {/* Sidebar */}
       <div
-        className="sidebar bg-light shadow-sm vh-100 px-3 py-3 transition-all"
+        className="sidebar bg-light shadow-sm vh-100 px-0 py-1 transition-all"
         style={{
           width: isOpen ? '240px' : '60px',
           overflow: 'hidden',
           transition: 'width 0.3s ease',
         }}
       >
-        {/* Bouton Toggle */}
-        <button
-          className="btn btn-outline-secondary mb-3 w-100 d-flex align-items-center justify-content-center"
-          onClick={toggleSidebar}
-        >
-          <FaBars />
-        </button>
+        
 
+        {/* Bouton Toggle */}
+        <div className="d-flex justify-content-between align-items-center px-3 py-4 mb-4 shadow-sm w-100">
+          {isOpen &&
+          <h3 className="mb-0  text-primary">R-PROJECT</h3>
+          }
+          
+          <button className="btn mx-1 " onClick={toggleSidebar} aria-label="Ouvrir le menu">
+            <FaBars size={20} />
+          </button>
+        </div>
+          
         {/* Contenu Sidebar */}
         {isOpen && (
           <>
-            <h3 className="mb-4 py-2">R-PROJECT</h3>
-            <ul className="nav flex-column">
+            <ul className="nav flex-column mx-2"> 
               <li className="nav-item mb-2">
                 <Link className="nav-link text-black d-flex align-items-center" to="/">
-                  <FaTachometerAlt className="me-2" /> Dashboard
+                  <FaTachometerAlt className="me-2 text-primary" /> Dashboard
                 </Link>
               </li>
               <li className="nav-item mb-2">
                 <Link className="nav-link text-black d-flex align-items-center" to="/projets">
-                  <FaProjectDiagram className="me-2" /> Projets
+                  <FaProjectDiagram className="me-2 text-primary" /> Projets
                 </Link>
               </li>
               <li className="nav-item mb-2">
                 <Link className="nav-link text-black d-flex align-items-center" to="/utilisateurs">
-                  <FaUsers className="me-2" /> Utilisateurs
+                  <FaUsers className="me-2 text-primary" /> Utilisateurs
                 </Link>
               </li>
               <li className="nav-item mb-2">
                 <Link className="nav-link text-black d-flex align-items-center" to="/commentaires">
-                  <FaComments className="me-2" /> Commentaires
+                  <FaComments className="me-2 text-primary" /> Commentaires
                 </Link>
               </li>
-              <li className="nav-item mb-2">
+              <li className="nav-item mb-2 text-primary">
                 <Link className="nav-link text-black d-flex align-items-center" to="/taches">
-                  <FaTasks className="me-2" /> Tâches
+                  <FaTasks className="me-2 text-primary" /> Tâches
                 </Link>
               </li>
             </ul>
