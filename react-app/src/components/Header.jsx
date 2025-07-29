@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext"; 
 import { useNavigate } from "react-router-dom";
-import Login from "../components/login";
-import Register from "./Register"; 
+import Login from "./modals/Login";
+import Register from "./modals/Register"; 
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 
 function Header() {
@@ -11,43 +11,51 @@ function Header() {
   const [showRegister, setShowRegister] = useState(false);
   const navigate = useNavigate();
 
-  const handleLoginClick = () => setShowLoginModal(true);
-  const handleCloseLogin = () => setShowLoginModal(false);
-  
-  const handleOpenRegister = () => {
-    setShowLoginModal(false);
-    setShowRegister(true);
-  };
-  
-  const handleCloseRegister = () => setShowRegister(false);
   const handleLogoutSubmit = () => {
     logout();
     navigate("/login");
   };
 
+  const handleSwitchToRegister = () => {
+    setShowLoginModal(false);
+    setShowRegister(true);
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowRegister(false);
+    setShowLoginModal(true);
+  };
+
   return (
     <>
       <nav className="navbar navbar-light bg-light px-3 py-3 shadow-sm">
-        <div className="d-flex align-items-center">
-          <input
-            type="search"
-            className="form-control me-2"
-            placeholder="Rechercher..."
-            aria-label="Search"
-            style={{ width: "550px" }}
-          />
+        <div className="d-flex align-items-center text-center">
+           {!isAuthenticated ? (
+          <h3 className="mb-3 py-1 px-3 text-primary">R-PROJECT</h3>) :
+          (null)}
         </div>
         <div className="d-flex align-items-center">
-          <span className="px-2 py-3 bg-light mx-2 rounded-circle text-center shadow-sm">
-            <FaUser size={25} color="black" className="rounded-circle mx-3 my-1" />
-          </span>
           {isAuthenticated ? (
-            <button className="btn btn-warning text-light" onClick={handleLogoutSubmit}>
-              <FaSignOutAlt title="Déconnexion" color="red" /> Se déconnecter
+          <span className="p-3 bg-light mx-2 rounded-circle text-center shadow-sm">
+            <FaUser size={20} color="black" className="rounded-circle  " />
+          </span>) : (<p></p>)
+          }
+          {isAuthenticated ? (
+            
+            <button
+              className="btn btn-warning text-light mx-3"
+              onClick={handleLogoutSubmit}
+              aria-label="Se déconnecter"
+            >
+              <FaSignOutAlt title="Déconnexion" color="red" className='mx-1'/> Se déconnecter
             </button>
           ) : (
-            <button className="btn btn-primary" onClick={handleLoginClick}>
-              <FaSignInAlt title="Connexion" color="green" /> Se connecter
+            <button
+              className="btn btn-primary mx-3"
+              onClick={() => setShowLoginModal(true)}
+              aria-label="Se connecter"
+            >
+              <FaSignInAlt title="Connexion" color="green" className='mx-1'/> Se connecter
             </button>
           )}
         </div>
@@ -55,19 +63,15 @@ function Header() {
 
       <Login 
         showModal={showLoginModal}
-        onClose={handleCloseLogin}
-        onOpenRegister={handleOpenRegister}
+        onClose={() => setShowLoginModal(false)}
+        onOpenRegister={handleSwitchToRegister}
       />
 
       <Register
         showModal={showRegister}
-        onClose={handleCloseRegister}
-        onOpenLogin={() => {
-          setShowRegister(false);
-          setShowLoginModal(true);
-        }}
+        onClose={() => setShowRegister(false)}
+        onOpenLogin={handleSwitchToLogin}
       />
-
     </>
   );
 }

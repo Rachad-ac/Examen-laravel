@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
-import { register } from "../api/axiosInstance";
+import { useAuth } from "../../context/AuthContext"; 
+import  UserApi  from "../../api/UserApi"; 
 
 function Register({ showModal, onClose, onOpenLogin }) {
   const { login } = useAuth();
@@ -11,31 +11,47 @@ function Register({ showModal, onClose, onOpenLogin }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      const { data } = await register({
-        name,
-        email,
-        password,
-        password_confirmation,
-      });
-      login(data.user || { email });
+ const handleRegister = async (e) => {
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
-      setName("");
-      setEmail("");
-      setPassword("");
-      setPassword_confirmation("");
+  try {
+    const { data } = await UserApi.register({
+      name,
+      email,
+      password,
+      password_confirmation,
+    });
 
-      onClose();
-    } catch (err) {
-      setError(err.response?.data?.message || "Erreur d'inscription");
-    } finally {
-      setLoading(false);
+    console.log("Réponse register :", data); // Debug
+
+    // Récupérer le token et l'utilisateur
+    const { user, token } = data;
+
+    // Appeler la fonction login de ton AuthContext
+    login(user, token);
+
+    // Réinitialiser les champs
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPassword_confirmation("");
+
+    if (onClose) onClose();
+  } catch (err) {
+    const errorData = err.response?.data;
+    if (errorData?.errors) {
+      const firstKey = Object.keys(errorData.errors)[0];
+      setError(errorData.errors[firstKey][0]);
+    } else {
+      setError(errorData?.message || "Erreur d'inscription");
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     if (showModal) {
@@ -69,7 +85,6 @@ function Register({ showModal, onClose, onOpenLogin }) {
                     className="form-control"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    autoComplete="off"
                     required
                   />
                 </div>
@@ -80,7 +95,6 @@ function Register({ showModal, onClose, onOpenLogin }) {
                     className="form-control"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="off"
                     required
                   />
                 </div>
@@ -91,11 +105,9 @@ function Register({ showModal, onClose, onOpenLogin }) {
                     className="form-control"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="off"
                     required
                   />
                 </div>
-
                 <div className="mb-3">
                   <label className="form-label">Confirmation Mot de passe</label>
                   <input
@@ -103,7 +115,6 @@ function Register({ showModal, onClose, onOpenLogin }) {
                     className="form-control"
                     value={password_confirmation}
                     onChange={(e) => setPassword_confirmation(e.target.value)}
-                    autoComplete="off"
                     required
                   />
                 </div>
@@ -120,19 +131,15 @@ function Register({ showModal, onClose, onOpenLogin }) {
                     </button>
                   </small>
                 </div>
+                <div className="modal-footer">
+                  <button className="btn btn-secondary" onClick={onClose}>
+                    Annuler
+                  </button>
+                  <button type="submit" className="btn btn-success" disabled={loading}>
+                    {loading ? "Création..." : "Créer le compte"}
+                  </button>
+                </div>
               </form>
-            </div>
-            <div className="modal-footer">
-              <button className="btn btn-secondary" onClick={onClose}>
-                Annuler
-              </button>
-              <button
-                className="btn btn-success"
-                onClick={handleRegister}
-                disabled={loading}
-              >
-                {loading ? "Création..." : "Créer le compte"}
-              </button>
             </div>
           </div>
         </div>

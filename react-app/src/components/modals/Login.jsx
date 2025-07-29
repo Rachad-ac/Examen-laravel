@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";  
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaSignInAlt } from "react-icons/fa";
+import UserApi from "../../api/UserApi"; 
 
-function Login({ showModal, onClose, onOpenRegister }) {
+function Login({ showModal = true, onClose, onOpenRegister }) {
   const { login: contextLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
 
   const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  e.preventDefault();
+  setError("");
+  setLoading(true);
 
   try {
-    await contextLogin({ email, password }); 
-    setEmail("");    
+    const response = await UserApi.login(email, password); 
+    console.log("Réponse login :", response.data); 
+
+    const { user, token } = response.data; 
+    contextLogin(user, token);
+
+    setEmail("");
     setPassword("");
-    onClose();
-    navigate("/"); 
+
+    if (onClose) onClose();
+    navigate(from, { replace: true }); 
   } catch (err) {
     setError(err?.response?.data?.message || err.message || "Identifiants incorrects");
   } finally {
@@ -29,13 +39,13 @@ function Login({ showModal, onClose, onOpenRegister }) {
   }
 };
 
+
   useEffect(() => {
     if (showModal) {
       document.body.classList.add('modal-open');
     } else {
       document.body.classList.remove('modal-open');
     }
-
     return () => {
       document.body.classList.remove('modal-open');
     };
@@ -62,8 +72,8 @@ function Login({ showModal, onClose, onOpenRegister }) {
                     className="form-control"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    autoComplete="off"
                     required
+                    autoFocus
                   />
                 </div>
                 <div className="mb-3">
@@ -73,7 +83,6 @@ function Login({ showModal, onClose, onOpenRegister }) {
                     className="form-control"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="off"
                     required
                   />
                 </div>
@@ -90,20 +99,21 @@ function Login({ showModal, onClose, onOpenRegister }) {
                     </button>
                   </small>
                 </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={onClose}>
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={loading}
+                  >
+                    <FaSignInAlt title="Connexion" color="green" />
+                    {" "}
+                    {loading ? "Connexion..." : "Se connecter"}
+                  </button>
+                </div>
               </form>
-            </div>
-            <div className="modal-footer">
-              <button className="btn btn-secondary" onClick={onClose}>
-                Annuler
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={handleLoginSubmit}
-                disabled={loading}
-              >
-                <FaSignInAlt title="Connexion" color="green" />
-                {loading ? "Connexion..." : "Se connecter"}
-              </button>
             </div>
           </div>
         </div>
