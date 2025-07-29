@@ -2,7 +2,7 @@ import React from "react";
 import { FaRocket, FaUsers, FaProjectDiagram} from "react-icons/fa";
 import Footer from "./Footer";
 
-function Welcome({onOpenRegister}) {
+function Home({onOpenRegister}) {
 
   return (
     <div className="container-fluid p-0">
@@ -83,4 +83,4 @@ function Welcome({onOpenRegister}) {
   );
 }
 
-export default Welcome;
+export default Home;

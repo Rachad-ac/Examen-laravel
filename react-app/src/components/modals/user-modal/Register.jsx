@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext"; 
-import  UserApi  from "../../api/UserApi"; 
+import { useAuth } from "../../../context/AuthContext";
+import  UserApi  from "../../../api/UserApi"; 
 
 function Register({ showModal, onClose, onOpenLogin }) {
   const { login } = useAuth();

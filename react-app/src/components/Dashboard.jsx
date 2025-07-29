@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Welcome from "./Welcome";
-import Register from "./modals/Register"; 
+import Home from "./Home";
+import Register from "./modals/user-modal/Register"; 
 import { useAuth } from "../context/AuthContext";
 
 function Dashboard() {
@@ -14,7 +14,7 @@ function Dashboard() {
     <>
       {!isAuthenticated ? (
         <>
-          <Welcome onOpenRegister={handleOpenRegister} />
+          <Home onOpenRegister={handleOpenRegister} />
           {showRegister && <Register showModal={showRegister} onClose={handleCloseRegister} />}
         </>
       ) : (
