@@ -24,7 +24,7 @@ function Navbar() {
         
 
         {/* Bouton Toggle */}
-        <div className="d-flex justify-content-between align-items-center px-3 py-4 mb-4 shadow-sm w-100">
+        <div className="d-flex justify-content-between align-items-center px-3 py-3 mb-4 shadow-sm w-100">
           {isOpen &&
           <h3 className="mb-0  text-primary">R-PROJECT</h3>
           }
@@ -34,7 +34,6 @@ function Navbar() {
           </button>
         </div>
           
-        {/* Contenu Sidebar */}
         {isOpen && (
           <>
             <ul className="nav flex-column mx-2"> 
@@ -45,7 +44,7 @@ function Navbar() {
               </li>
               <li className="nav-item mb-2">
                 <Link className="nav-link text-black d-flex align-items-center" to="/projets">
-                  <FaProjectDiagram className="me-2 text-primary" /> Projets
+                  {isOpen &&<FaProjectDiagram className="me-2 text-primary" />} Projets
                 </Link>
               </li>
               <li className="nav-item mb-2">
