@@ -7,6 +7,7 @@ import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 
 function Header() {
   const { isAuthenticated, logout } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const navigate = useNavigate();
@@ -31,27 +32,30 @@ function Header() {
       <nav className="navbar navbar-light bg-light px-3 py-3 shadow-sm">
         <div className="d-flex align-items-center text-center">
            {!isAuthenticated ? (
-          <h3 className="mb-3 py-1 px-3 text-primary">R-PROJECT</h3>) :
+          <h3 className=" fw-bold mt-1 mb-1 py-1 px-3 text-primary">R-PROJECT</h3>) :
           (null)}
         </div>
         <div className="d-flex align-items-center">
           {isAuthenticated ? (
-          <span className="p-3 bg-light mx-2 rounded-circle text-center shadow-sm">
+          <span className="p-2 bg-light mx-0 rounded-circle text-center shadow-sm">
             <FaUser size={20} color="black" className="rounded-circle  " />
           </span>) : (<p></p>)
           }
           {isAuthenticated ? (
             
             <button
-              className="btn btn-warning text-light mx-3"
+              className="btn btn-outline-danger  btn-sm mx-4 py-1 px-3"
               onClick={handleLogoutSubmit}
+              disabled={loading}
               aria-label="Se déconnecter"
             >
-              <FaSignOutAlt title="Déconnexion" color="red" className='mx-1'/> Se déconnecter
+              <FaSignOutAlt title="Déconnexion" color="red" className='mx-1'/> 
+              {" "}
+              {loading ? "Deconnexion..." : "Se déconnecter"}
             </button>
           ) : (
             <button
-              className="btn btn-primary mx-3"
+              className="btn btn-outline-primary btn-sm mx-4 py-1 px-3"
               onClick={() => setShowLoginModal(true)}
               aria-label="Se connecter"
             >
