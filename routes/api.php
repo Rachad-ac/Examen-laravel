@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController; 
+use App\Http\Controllers\AuthController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Routes proteger pour user
     Route::get('/user', fn (Request $request) => $request->user()); 
+    Route::get('/user/all', function () {return User::paginate(10); });
     Route::post('/logout', [AuthController::class, 'logout']); 
 
     // Routes pour projets

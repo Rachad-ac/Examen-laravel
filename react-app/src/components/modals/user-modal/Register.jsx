@@ -6,6 +6,7 @@ function Register({ showModal, onClose, onOpenLogin }) {
   const { login } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [error, setError] = useState("");
@@ -22,6 +23,7 @@ function Register({ showModal, onClose, onOpenLogin }) {
       email,
       password,
       password_confirmation,
+      role,
     });
 
     console.log("Réponse register :", data); // Debug
@@ -37,6 +39,7 @@ function Register({ showModal, onClose, onOpenLogin }) {
     setEmail("");
     setPassword("");
     setPassword_confirmation("");
+    setRole("");
 
     if (onClose) onClose();
   } catch (err) {
@@ -117,6 +120,21 @@ function Register({ showModal, onClose, onOpenLogin }) {
                     onChange={(e) => setPassword_confirmation(e.target.value)}
                     required
                   />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="role" className="form-label">Rôle</label>
+                  <select 
+                    name="role"
+                    className="form-control" 
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    required
+                  >
+                    <option value="">-- Sélectionner un rôle --</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                  </select>
                 </div>
                 {error && <div className="alert alert-danger">{error}</div>}
                 <div className="mt-3 text-center">

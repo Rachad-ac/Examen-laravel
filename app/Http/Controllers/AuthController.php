@@ -17,6 +17,7 @@ class AuthController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|in:admin,user',
         ]);
 
         if ($validator->fails()) {
@@ -27,6 +28,7 @@ class AuthController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => $request->password, // cast automatique grâce à 'hashed'
+            'role' => $request->role,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
