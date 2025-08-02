@@ -17,6 +17,10 @@ const UserApi = {
         return axiosApi.get('/user')
     },
 
+    getAllUsers: () => {
+        return axiosApi.get('/user/all'); 
+    },
+
     getMyProjects : () => {
         return axiosApi.get('/projects')
     },
